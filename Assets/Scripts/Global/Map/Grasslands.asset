@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ecb0d4b943df8d468b80fbba04c7c2f, type: 3}
+  m_Name: Grasslands
+  m_EditorClassIdentifier: 
+  tiles:
+  - {fileID: 11400000, guid: 2317a16c6654c0f4b8a6759e2cffcef4, type: 2}
+  - {fileID: 11400000, guid: 8b7b719224fb0404f82c21b23bd1aa34, type: 2}
+  - {fileID: 11400000, guid: c906262fb7c597a4ea4041cf32caa313, type: 2}
+  - {fileID: 11400000, guid: 589b19d88116e4741b2bf67561874202, type: 2}
+  - {fileID: 11400000, guid: 429cd1cb973e73140bf1867b0b6c20ab, type: 2}
+  - {fileID: 11400000, guid: 39d5c4298b76c4442b202f493cf5a662, type: 2}
+  - {fileID: 11400000, guid: e6adfaf4c985a8448aae3a0ddf0b7329, type: 2}
+  - {fileID: 11400000, guid: 5f18014b35a183b458c8cde0495176a9, type: 2}
+  - {fileID: 11400000, guid: c8ba5bbb77bd1e741992e426c49eeccd, type: 2}
+  - {fileID: 11400000, guid: 86c97fe8f1de9b240a803d152e15a061, type: 2}
+  - {fileID: 11400000, guid: c1dad2e1c4774e44dbb3c8466eeda2ef, type: 2}
+  - {fileID: 11400000, guid: 30358a22a107ee3498af7e07d576f17f, type: 2}
+  - {fileID: 11400000, guid: e904a77a00011a44a99e5af6bfa9394b, type: 2}
+  moveResistance: 1
+  visualOpacity: 1
+  surfaceSolidity: 1
+  walkable: 1
