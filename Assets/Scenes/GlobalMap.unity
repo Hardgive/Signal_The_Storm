@@ -257,6 +257,61 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 321153994}
   m_CullTransparentMesh: 1
+--- !u!1 &343504386
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 343504388}
+  - component: {fileID: 343504387}
+  m_Layer: 0
+  m_Name: MapManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &343504387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 343504386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cdaa8a29cf59b204a6bb0887838accc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapCoordinateGrid: {fileID: 1991708697}
+  mapLayers:
+  - {fileID: 1513129473}
+  - {fileID: 2082749940}
+  - {fileID: 2001167162}
+  tileData:
+  - {fileID: 11400000, guid: fffd4bf5f8838431ea1367aba454d7bc, type: 2}
+  - {fileID: 11400000, guid: 0f4f0f9bb4426cbf7804d3b6455db47b, type: 2}
+  - {fileID: 11400000, guid: 7cf5e5e0e21323b768e8b76b9d0cf333, type: 2}
+  - {fileID: 11400000, guid: 8e7106801cff07d67958d6746aa34776, type: 2}
+  - {fileID: 11400000, guid: 5c6f1eff4cd1ec578814c498133f2a7b, type: 2}
+--- !u!4 &343504388
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 343504386}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &473100878
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,7 +347,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000015259, y: -0.000015258789}
+  m_AnchoredPosition: {x: -0.000015258789, y: -0.000015258789}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &473100880
@@ -944,7 +999,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2024850034}
-  - component: {fileID: 2024850033}
   - component: {fileID: 1513129473}
   - component: {fileID: 1513129472}
   m_Layer: 6
@@ -3057,18 +3111,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!114 &2024850033
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1513129470}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &2024850034
 Transform:
   m_ObjectHideFlags: 0
