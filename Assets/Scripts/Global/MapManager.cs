@@ -6,7 +6,26 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class MapManager : MonoBehaviour
-{
+{    
+    public static MapManager instance = null; // Экземпляр объекта
+
+    // Метод, выполняемый при старте игры
+    void Start () {
+        // Теперь, проверяем существование экземпляра
+	    if (instance == null) { // Экземпляр менеджера был найден
+	        instance = this; // Задаем ссылку на экземпляр объекта
+	    } else if(instance == this){ // Экземпляр объекта уже существует на сцене
+	        Destroy(gameObject); // Удаляем объект
+	    }
+	    DontDestroyOnLoad(gameObject);
+	    InitializeManager();
+    }
+
+    // Метод инициализации менеджера
+    private void InitializeManager(){
+        /* TODO: Здесь мы будем проводить инициализацию */
+    }
+
     [SerializeField]
     public Grid mapCoordinateGrid;
     [SerializeField]
@@ -30,7 +49,14 @@ public class MapManager : MonoBehaviour
         }
     }
 
-    private List<GridTIleData> getTileData(Vector3Int gridPos)
+    public List<GridTIleData> getTileData(Vector3 worldPos)
+    {
+            Vector3Int gridPos = mapCoordinateGrid.WorldToCell(worldPos);
+            var tileData = getTileDataGrid(gridPos);
+            return tileData;
+    }
+
+    public List<GridTIleData> getTileDataGrid(Vector3Int gridPos)
     {
         var ret = new List<GridTIleData>();
         foreach(var tilemap in mapLayers)
@@ -41,7 +67,7 @@ public class MapManager : MonoBehaviour
                 ret.Add(null);
                 continue;
             }
-            GridTIleData data = new GridTIleData();
+            GridTIleData data;
             if (mapTileData.TryGetValue(tile, out data))
             {
                 ret.Add(data);
@@ -62,7 +88,7 @@ public class MapManager : MonoBehaviour
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3Int gridPos = mapCoordinateGrid.WorldToCell(mousePos);
 
-            var tileData = getTileData(gridPos);
+            var tileData = getTileDataGrid(gridPos);
             string tileStateMsg = "";
 
             foreach(var data in tileData)

@@ -1,6 +1,0 @@
-using Unity;
-
-
-namespace STS{
-    
-}
