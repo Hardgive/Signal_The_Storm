@@ -4,7 +4,7 @@ using UnityEditor.UI;
 using UnityEngine;
 
 namespace STS{
-    public class PlayerMovement: MoveablePawn
+    public class Player: MoveablePawn
     {
         override protected void SetTargerPosition()
         {

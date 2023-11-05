@@ -8,14 +8,19 @@ namespace STS{
 
 public abstract class MoveablePawn : Pawn
 {
+    [SerializeField]
+    public MovementParameters movementParameters;
     protected Vector3 targetPosition;
+
 
     // Update is called once per frame
     void Update()
     {
+        UpdateParameters();
         if(Input.GetMouseButton(0))
         {
             SetTargerPosition();
+            
         }
 
         if (state == GlobalPawnStates.MOVING)
@@ -24,13 +29,22 @@ public abstract class MoveablePawn : Pawn
         }
     }
 
+    protected void UpdateParameters()
+    {
+        movementParameters.UpdateParameters(MapManager.instance.getTileData(transform.position));
+    }
 
     protected void Move()
     {
         if(this.state != GlobalPawnStates.MOVING)
             return;
 
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, 1.0f*Time.deltaTime);
+        transform.position = Vector3.MoveTowards(
+                                                    transform.position, 
+                                                    targetPosition, 
+                                                    movementParameters.curVelocity*Time.deltaTime
+                                                );
+        // print("CurVelocity "+ movementParameters.curVelocity+ " per time "+ Time.deltaTime);
         if(transform.position == targetPosition)
         {
             state = GlobalPawnStates.PLANNING;        
