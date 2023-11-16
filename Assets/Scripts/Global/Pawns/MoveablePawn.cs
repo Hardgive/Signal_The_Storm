@@ -9,7 +9,7 @@ namespace STS{
 public abstract class MoveablePawn : Pawn
 {
     [SerializeField]
-    public MovementParameters movementParameters;
+    public MovementObject movement;
     protected Vector3 targetPosition;
 
 
@@ -31,7 +31,7 @@ public abstract class MoveablePawn : Pawn
 
     protected void UpdateParameters()
     {
-        movementParameters.UpdateParameters(MapManager.instance.getTileData(transform.position));
+        movement.UpdateParameters(MapManager.instance.getTileData(transform.position));
     }
 
     protected void Move()
@@ -42,7 +42,7 @@ public abstract class MoveablePawn : Pawn
         transform.position = Vector3.MoveTowards(
                                                     transform.position, 
                                                     targetPosition, 
-                                                    movementParameters.curVelocity*Time.deltaTime
+                                                    movement.elements.curVelocity*Time.deltaTime
                                                 );
         // print("CurVelocity "+ movementParameters.curVelocity+ " per time "+ Time.deltaTime);
         if(transform.position == targetPosition)

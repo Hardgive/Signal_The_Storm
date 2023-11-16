@@ -6,7 +6,7 @@ using UnityEngine.Tilemaps;
 using System.Security.Cryptography;
 
 [CreateAssetMenu]
-public class GridTIleData : ScriptableObject
+public class GridTileData : ScriptableObject
 {
     public TileBase[] tiles;
 

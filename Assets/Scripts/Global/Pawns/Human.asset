@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6b871de7adebdbafbfc95c06510c9ea, type: 3}
   m_Name: Human
   m_EditorClassIdentifier: 
-  acceleration: 2
-  baseVelocity: 4
-  maxVelocity: 6
-  baseEndurance: 1
-  maxEndurance: 1
-  curVelocity: 0
+  elements:
+    acceleration: 1
+    baseVelocity: 2
+    maxVelocity: 4
+    baseEndurance: 2
+    maxEndurance: 2
+    curVelocity: 1
