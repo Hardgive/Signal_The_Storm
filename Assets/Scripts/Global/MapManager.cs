@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -27,18 +28,20 @@ public class MapManager : MonoBehaviour
     }
 
     [SerializeField]
-    public Grid mapCoordinateGrid;
+    public Grid mapGrid;
+    [SerializeField]
+    public Grid navigationGrid;
     [SerializeField]
     public List<Tilemap> mapLayers;
 
     [SerializeField]
-    private List<GridTIleData> tileData;
+    private List<GridTileData> tileData;
 
-    private Dictionary<TileBase, GridTIleData> mapTileData;
+    private Dictionary<TileBase, GridTileData> mapTileData;
 
     void Awake()
     {
-        mapTileData = new Dictionary<TileBase, GridTIleData>();
+        mapTileData = new Dictionary<TileBase, GridTileData>();
 
         foreach(var data in tileData)
         {
@@ -49,16 +52,40 @@ public class MapManager : MonoBehaviour
         }
     }
 
-    public List<GridTIleData> getTileData(Vector3 worldPos)
+    public List<GridTileData> getTileData(Vector3 worldPos)
     {
-            Vector3Int gridPos = mapCoordinateGrid.WorldToCell(worldPos);
+            Vector3Int gridPos = mapGrid.WorldToCell(worldPos);
             var tileData = getTileDataGrid(gridPos);
             return tileData;
     }
 
-    public List<GridTIleData> getTileDataGrid(Vector3Int gridPos)
+    public GridTileData getNavTileData(Vector3 worldPos)
     {
-        var ret = new List<GridTIleData>();
+        Vector3Int gridPos = mapGrid.WorldToCell(worldPos);
+        var tileData = getTileDataGrid(gridPos);
+
+        float moveResistance = 1.0f;
+        float visualOpacity = 1.0f;
+        float surfaceSolidity = 1.0f;
+        bool walkable = true;
+        foreach (var data in tileData)
+        {
+            if(data is null)
+                continue;
+            moveResistance *= data.moveResistance;
+            visualOpacity *= data.visualOpacity;
+            surfaceSolidity *= data.surfaceSolidity;
+            walkable &= data.walkable;
+        }
+        return new GridTileData(){moveResistance=moveResistance,
+                                  visualOpacity=visualOpacity,
+                                  surfaceSolidity=surfaceSolidity,
+                                  walkable=walkable};
+    }
+
+    public List<GridTileData> getTileDataGrid(Vector3Int gridPos)
+    {
+        var ret = new List<GridTileData>();
         foreach(var tilemap in mapLayers)
         {
             var tile = tilemap.GetTile(gridPos);
@@ -67,7 +94,7 @@ public class MapManager : MonoBehaviour
                 ret.Add(null);
                 continue;
             }
-            GridTIleData data;
+            GridTileData data;
             if (mapTileData.TryGetValue(tile, out data))
             {
                 ret.Add(data);
@@ -86,7 +113,7 @@ public class MapManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector3Int gridPos = mapCoordinateGrid.WorldToCell(mousePos);
+            Vector3Int gridPos = mapGrid.WorldToCell(mousePos);
 
             var tileData = getTileDataGrid(gridPos);
             string tileStateMsg = "";
