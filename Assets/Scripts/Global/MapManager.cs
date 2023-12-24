@@ -6,6 +6,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+namespace STS{
+
+
 public class MapManager : MonoBehaviour
 {    
     public static MapManager instance = null; // Экземпляр объекта
@@ -52,23 +55,61 @@ public class MapManager : MonoBehaviour
         }
     }
 
-    public List<GridTileData> getTileData(Vector3 worldPos)
+    public List<TileData> getTileData(Vector3 worldPos)
+    {
+            Vector3Int gridPos = mapGrid.WorldToCell(worldPos);
+            var tileData = getTileDataGrid(gridPos).Select(x=>new TileData(x)).ToList();
+            return tileData;
+    }
+    public TileData getTileDataMerged(Vector3 worldPos)
     {
             Vector3Int gridPos = mapGrid.WorldToCell(worldPos);
             var tileData = getTileDataGrid(gridPos);
-            return tileData;
+            return this.mergeTileData(tileData);
     }
 
-    public GridTileData getNavTileData(Vector3 worldPos)
+    public Vector3Int WorldToNavCoords(Vector3 worldPos)
     {
-        Vector3Int gridPos = mapGrid.WorldToCell(worldPos);
-        var tileData = getTileDataGrid(gridPos);
+        var ret = navigationGrid.WorldToCell(worldPos);
+        return ret;
+    }
 
+    public Vector3Int WorldToMapCoords(Vector3 worldPos)
+    {
+        var ret = mapGrid.WorldToCell(worldPos);
+        return ret;
+    }
+
+    public Vector3 NavToWorldCoords(Vector3Int navPos)
+    {
+        var ret = navigationGrid.CellToWorld(navPos);
+        return ret;
+    }
+
+    public Vector3 MapToWorldCoords(Vector3Int mapPos)
+    {
+        var ret = mapGrid.CellToWorld(mapPos);
+        return ret;
+    }
+
+    public Vector3Int NavToMapCoords(Vector3Int navPos)
+    {
+        return mapGrid.WorldToCell(navigationGrid.CellToWorld(navPos));
+    }
+
+    public Vector3Int MapToNavCoords(Vector3Int mapPos)
+    {
+        return navigationGrid.WorldToCell(mapGrid.CellToWorld(mapPos));
+    }
+
+
+    public TileData mergeTileData(List<GridTileData> dataList)
+    {
         float moveResistance = 1.0f;
         float visualOpacity = 1.0f;
         float surfaceSolidity = 1.0f;
         bool walkable = true;
-        foreach (var data in tileData)
+        foreach (var data in dataList)
         {
             if(data is null)
                 continue;
@@ -77,18 +118,38 @@ public class MapManager : MonoBehaviour
             surfaceSolidity *= data.surfaceSolidity;
             walkable &= data.walkable;
         }
-        return new GridTileData(){moveResistance=moveResistance,
+        return new TileData(){moveResistance=moveResistance,
                                   visualOpacity=visualOpacity,
                                   surfaceSolidity=surfaceSolidity,
                                   walkable=walkable};
+
     }
 
-    public List<GridTileData> getTileDataGrid(Vector3Int gridPos)
+    public TileData getTileDataFromWorld(Vector3 worldPos)
+    {
+        Vector3Int gridPos = mapGrid.WorldToCell(worldPos);
+        var tileData = getTileDataGrid(gridPos);
+        return mergeTileData(tileData);
+    }
+
+    public TileData getTileDataFromNav(Vector3Int navPos)
+    {
+        Vector3Int mapPos = this.NavToMapCoords(navPos);
+        var tileData = getTileDataGrid(mapPos);
+        return mergeTileData(tileData);
+    }
+        public TileData getTileDataFromMap(Vector3Int mapPos)
+    {
+        var tileData = getTileDataGrid(mapPos);
+        return mergeTileData(tileData);
+    }
+
+    public List<GridTileData> getTileDataGrid(Vector3Int mapPos)
     {
         var ret = new List<GridTileData>();
         foreach(var tilemap in mapLayers)
         {
-            var tile = tilemap.GetTile(gridPos);
+            var tile = tilemap.GetTile(mapPos);
             if (tile is null)
             {
                 ret.Add(null);
@@ -114,6 +175,7 @@ public class MapManager : MonoBehaviour
         {
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3Int gridPos = mapGrid.WorldToCell(mousePos);
+            Vector3Int navPos = navigationGrid.WorldToCell(mousePos);
 
             var tileData = getTileDataGrid(gridPos);
             string tileStateMsg = "";
@@ -130,7 +192,7 @@ public class MapManager : MonoBehaviour
                         +' '
                         );
             }
-            print("Clicked "+ mousePos + " tile "+ tileStateMsg);   
+            print("Clicked "+ mousePos + " = ("+ gridPos +"):(" + navPos + "); " + "tile " + tileStateMsg);   
 
             // GridTIleData tiledata = new GridTIleData();
             // if(mapTileData.TryGetValue(tile, out tiledata))
@@ -145,4 +207,6 @@ public class MapManager : MonoBehaviour
             
         }
     }
+
+}
 }
