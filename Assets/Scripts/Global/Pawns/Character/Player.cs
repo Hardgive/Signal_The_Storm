@@ -8,8 +8,9 @@ namespace STS{
     {
         override protected void SetTargerPosition()
         {
-            targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            targetPosition.z = transform.position.z;
+            var Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Pos.z = transform.position.z;
+            PlanRoute(Pos);
             state = GlobalPawnStates.MOVING;
         }
     }

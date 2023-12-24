@@ -24,6 +24,7 @@ namespace STS{
 
     }
 
+
     [CreateAssetMenu]
     public class MovementObject : ScriptableObject 
     {
@@ -34,8 +35,24 @@ namespace STS{
 
         }
 
+        public void UpdateParameters(GridTileData gridTileData)
+        {
+            this.UpdateParameters(new TileData(gridTileData));
+        }
+        
 
-        public void UpdateParameters(List<GridTileData> gridTileDatas)
+        public void UpdateParameters(TileData gridTileData)
+        {
+            float moveResistance = gridTileData.moveResistance;
+            float visualOpacity = gridTileData.visualOpacity;
+            float surfaceSolidity = gridTileData.surfaceSolidity;
+            bool walkable = gridTileData.walkable;
+            float limVelocity = Math.Min(elements.maxVelocity/moveResistance, elements.baseVelocity*surfaceSolidity/moveResistance);  
+            float incVelocity = elements.curVelocity < limVelocity? surfaceSolidity*elements.acceleration: 0;
+            elements.curVelocity = Math.Min(elements.curVelocity+incVelocity, limVelocity);
+        }
+
+        public float GetMovementDifficulty(List<TileData> gridTileDatas)
         {
             float moveResistance = 1.0f;
             float visualOpacity = 1.0f;
@@ -51,8 +68,18 @@ namespace STS{
                 walkable &= data.walkable;
             }
             float limVelocity = Math.Min(elements.maxVelocity/moveResistance, elements.baseVelocity*surfaceSolidity/moveResistance);  
-            float incVelocity = elements.curVelocity < limVelocity? surfaceSolidity*elements.acceleration: 0;
-            elements.curVelocity = Math.Min(elements.curVelocity+incVelocity, limVelocity);
+        
+            return moveResistance/surfaceSolidity;
+        }
+        public float GetMovementDifficulty(TileData gridTileData)
+        {
+            float moveResistance = gridTileData.moveResistance;
+            float visualOpacity = gridTileData.visualOpacity;
+            float surfaceSolidity = gridTileData.surfaceSolidity;
+            bool walkable = gridTileData.walkable;
+            float limVelocity = Math.Min(elements.maxVelocity/moveResistance, elements.baseVelocity*surfaceSolidity/moveResistance);  
+        
+            return moveResistance/surfaceSolidity;
         }
     }
 
