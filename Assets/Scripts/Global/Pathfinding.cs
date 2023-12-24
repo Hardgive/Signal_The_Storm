@@ -61,7 +61,7 @@ public class Pathfinding
         var down_cost = _movement.GetMovementDifficulty(MapManager.instance.getTileDataFromNav(down));
         result.Add(up, ((costs[Direction.ru]+costs[Direction.lu]+2*currentDif) + (costs[Direction.ru]+costs[Direction.lu]+2*up_cost))*1.723f*0.25f);
         result.Add(down, ((costs[Direction.ru]+costs[Direction.lu]+2*currentDif) + (costs[Direction.ru]+costs[Direction.lu]+2*down_cost))*1.723f*0.25f);
-        
+
         return result;
     }
 
